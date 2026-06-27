@@ -44,23 +44,10 @@
                     <div style="padding: 30px;">
                         <p style="margin-bottom: 20px; color: var(--text-secondary);">API kalitingiz orqali dasturiy tarzda buyurtma berishingiz mumkin.</p>
                         <div style="display: flex; gap: 15px; align-items: center;">
-                            <input type="text" id="apiKeyInput" value="ssms_xxxxxxxxxxxxxxxxxxxxxxxx" readonly style="flex: 1; font-family: monospace; background: var(--dark-bg);">
+                            <input type="text" id="apiKeyInput" value="ssms_xxxxxxxxxxxxxxxxxxxxxxxx" readonly style="flex: 1; font-family: monospace; background: var(--dark-bg); padding: 12px; border: 1px solid var(--border-color); border-radius: 8px;">
                             <button class="btn btn-primary" onclick="copyApiKey()"><i class="fas fa-copy"></i> Nusxalash</button>
                             <button class="btn btn-outline" onclick="generateNewKey()"><i class="fas fa-sync"></i> Yangilash</button>
                         </div>
-                        <script>
-                            function copyApiKey() {
-                                const input = document.getElementById('apiKeyInput');
-                                input.select();
-                                document.execCommand('copy');
-                                alert('API kalit nusxalandi!');
-                            }
-                            function generateNewKey() {
-                                const newKey = 'ssms_' + Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
-                                document.getElementById('apiKeyInput').value = newKey;
-                                alert('Yangi kalit yaratildi!');
-                            }
-                        </script>
                     </div>
                 </div>
 
@@ -123,6 +110,31 @@ Response:
 }</code></pre>
                     </div>
                 </div>
+
+                <div class="content-card" style="margin-top: 20px;">
+                    <div class="card-header"><h3><i class="fas fa-flask"></i> Test API</h3></div>
+                    <div style="padding: 30px;">
+                        <p style="margin-bottom: 20px; color: var(--text-secondary);">API ni to'g'ridan-to'g'ri shu yerda test qilishingiz mumkin.</p>
+                        
+                        <div style="margin-bottom: 20px;">
+                            <label style="display: block; margin-bottom: 8px; font-weight: 500;">Endpoint:</label>
+                            <select id="testEndpoint" style="width: 100%; padding: 12px; background: var(--dark-bg); border: 1px solid var(--border-color); border-radius: 8px;">
+                                <option value="balance">GET /balance - Balansni ko'rish</option>
+                                <option value="orders">GET /orders - Buyurtmalarni ko'rish</option>
+                                <option value="services">GET /services - Xizmatlar ro'yxati</option>
+                            </select>
+                        </div>
+                        
+                        <button class="btn btn-primary" onclick="testApi()" style="width: 100%;"><i class="fas fa-play"></i> Test qilish</button>
+                        
+                        <div id="testResult" style="margin-top: 20px; display: none;">
+                            <h4 style="margin-bottom: 10px;">Natija:</h4>
+                            <pre id="testOutput" style="padding: 20px; background: var(--dark-bg); border-radius: 10px; overflow-x: auto; max-height: 400px;"></pre>
+                        </div>
+                    </div>
+                </div>
+                    </div>
+                </div>
             </section>
         </main>
     </div>
@@ -130,8 +142,137 @@ Response:
     <script src="js/storage.js"></script>
     <script src="js/dashboard.js"></script>
     <script>
-        const user=userManager.getCurrentUser();
-        if(user)document.getElementById('userName').textContent=user.firstName;
+        // Check authentication
+        if (!checkAuth()) {
+            window.location.href = 'login.html';
+        }
+        
+        // Load user info and API key
+        const user = userManager.getCurrentUser();
+        if (user) {
+            document.getElementById('userName').textContent = user.firstName;
+            
+            // Generate or load API key
+            let apiKey = user.apiKey;
+            if (!apiKey) {
+                apiKey = 'ssms_' + generateRandomKey();
+                user.apiKey = apiKey;
+                storage.set('users', storage.get('users'));
+            }
+            
+            document.getElementById('apiKeyInput').value = apiKey;
+        }
+        
+        function generateRandomKey() {
+            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+            let result = '';
+            for (let i = 0; i < 32; i++) {
+                result += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            return result;
+        }
+        
+        function copyApiKey() {
+            const input = document.getElementById('apiKeyInput');
+            input.select();
+            navigator.clipboard.writeText(input.value).then(() => {
+                alert('✅ API kalit nusxalandi!');
+            }).catch(() => {
+                document.execCommand('copy');
+                alert('✅ API kalit nusxalandi!');
+            });
+        }
+        
+        function generateNewKey() {
+            if (!confirm('Yangi API kalit yaratmoqchimisiz? Eski kalit ishlamay qoladi.')) {
+                return;
+            }
+            
+            const user = userManager.getCurrentUser();
+            const newKey = 'ssms_' + generateRandomKey();
+            user.apiKey = newKey;
+            
+            // Update user in storage
+            const users = storage.get('users') || [];
+            const userIndex = users.findIndex(u => u.id === user.id);
+            if (userIndex !== -1) {
+                users[userIndex].apiKey = newKey;
+                storage.set('users', users);
+            }
+            
+            document.getElementById('apiKeyInput').value = newKey;
+            alert('✅ Yangi API kalit yaratildi!');
+        }
+        
+        // Test API function
+        function testApi() {
+            const endpoint = document.getElementById('testEndpoint').value;
+            const user = userManager.getCurrentUser();
+            const testResult = document.getElementById('testResult');
+            const testOutput = document.getElementById('testOutput');
+            
+            let response;
+            
+            switch(endpoint) {
+                case 'balance':
+                    response = {
+                        success: true,
+                        balance: user.balance,
+                        currency: 'USD',
+                        timestamp: new Date().toISOString()
+                    };
+                    break;
+                    
+                case 'orders':
+                    const orders = orderManager.getUserOrders(user.id);
+                    response = {
+                        success: true,
+                        count: orders.length,
+                        orders: orders.slice(-5).map(o => ({
+                            id: o.id,
+                            service: o.service,
+                            quantity: o.quantity,
+                            price: o.price,
+                            status: o.status,
+                            progress: o.progress,
+                            created: o.createdAt
+                        }))
+                    };
+                    break;
+                    
+                case 'services':
+                    response = {
+                        success: true,
+                        categories: [
+                            {
+                                id: 'telegram',
+                                name: 'Telegram',
+                                services: [
+                                    { id: 'telegram-members', name: 'O\'zbek Obunachilari', price: 0.05 },
+                                    { id: 'telegram-views', name: 'Post Ko\'rishlari', price: 0.001 },
+                                    { id: 'telegram-reactions', name: 'Reaksiyalar', price: 0.02 }
+                                ]
+                            },
+                            {
+                                id: 'instagram',
+                                name: 'Instagram',
+                                services: [
+                                    { id: 'instagram-followers', name: 'Obunachilari', price: 0.03 },
+                                    { id: 'instagram-likes', name: 'Layklar', price: 0.005 },
+                                    { id: 'instagram-views', name: 'Ko\'rishlar', price: 0.001 }
+                                ]
+                            }
+                        ]
+                    };
+                    break;
+            }
+            
+            testOutput.textContent = JSON.stringify(response, null, 2);
+            testResult.style.display = 'block';
+            
+            // Scroll to result
+            testResult.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
     </script>
 </body>
 </html>
