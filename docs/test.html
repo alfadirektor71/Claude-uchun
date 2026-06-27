@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test - Ishlayaptimi?</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+        .box {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 500px;
+        }
+        h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+        button {
+            background: white;
+            color: #667eea;
+            border: none;
+            padding: 15px 30px;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 10px;
+            cursor: pointer;
+            margin: 10px;
+        }
+        button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+        .success {
+            color: #4ade80;
+            font-size: 24px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="box">
+        <h1>✅ Ishlayapti!</h1>
+        <p class="success">Sayt to'g'ri yuklandi!</p>
+        <p>Agar bu sahifani ko'rib turibsiz - demak hammasi ishlayapti!</p>
+        
+        <div style="margin-top: 30px;">
+            <button onclick="window.location.href='login.html'">
+                Login Sahifasiga O'tish
+            </button>
+            <button onclick="window.location.href='index.html'">
+                Dashboard'ga O'tish
+            </button>
+        </div>
+        
+        <div style="margin-top: 30px; font-size: 14px; opacity: 0.8;">
+            <p><strong>Fayllar:</strong></p>
+            <p>✅ HTML fayllar</p>
+            <p>✅ CSS fayllar</p>
+            <p>✅ JavaScript fayllar</p>
+            <p id="storage-test"></p>
+        </div>
+    </div>
+
+    <script>
+        // LocalStorage test
+        try {
+            localStorage.setItem('test', 'works');
+            if (localStorage.getItem('test') === 'works') {
+                document.getElementById('storage-test').innerHTML = '✅ LocalStorage ishlayapti';
+                localStorage.removeItem('test');
+            } else {
+                document.getElementById('storage-test').innerHTML = '❌ LocalStorage ishlamayapti';
+            }
+        } catch (e) {
+            document.getElementById('storage-test').innerHTML = '❌ LocalStorage o\'chirilgan';
+        }
+        
+        console.log('✅ Test sahifasi yuklandi!');
+        console.log('📁 CSS path:', document.querySelector('link[href*="css"]'));
+        console.log('📁 JS fayllar yuklanmoqda...');
+    </script>
+</body>
+</html>

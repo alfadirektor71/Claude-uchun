@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Professional Moliyaviy Boshqaruv Tizimi">
+    <title>Moliyaviy Boshqaruv | Dashboard</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="logo">
+                <i class="fas fa-chart-line"></i>
+                <span>Moliyaviy Tizim</span>
+            </div>
+            <button class="sidebar-toggle" id="sidebarToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+        
+        <nav class="sidebar-nav">
+            <a href="index.html" class="nav-item active">
+                <i class="fas fa-home"></i>
+                <span>Dashboard</span>
+            </a>
+            <a href="income.html" class="nav-item">
+                <i class="fas fa-arrow-up"></i>
+                <span>Daromad</span>
+            </a>
+            <a href="expense.html" class="nav-item">
+                <i class="fas fa-arrow-down"></i>
+                <span>Xarajat</span>
+            </a>
+            <a href="customers.html" class="nav-item">
+                <i class="fas fa-users"></i>
+                <span>Mijozlar</span>
+            </a>
+            <a href="debts.html" class="nav-item">
+                <i class="fas fa-hand-holding-usd"></i>
+                <span>Qarzlar</span>
+
+            </a>
+            <a href="reports.html" class="nav-item">
+                <i class="fas fa-file-alt"></i>
+                <span>Hisobotlar</span>
+            </a>
+            <a href="categories.html" class="nav-item">
+                <i class="fas fa-tags"></i>
+                <span>Kategoriyalar</span>
+            </a>
+            <a href="settings.html" class="nav-item">
+                <i class="fas fa-cog"></i>
+                <span>Sozlamalar</span>
+            </a>
+        </nav>
+
+        <div class="sidebar-footer">
+            <button class="btn-logout" onclick="logout()">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Chiqish</span>
+            </button>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Top Bar -->
+        <header class="top-bar">
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" placeholder="Qidirish..." id="globalSearch">
+            </div>
+            
+            <div class="top-actions">
+                <button class="theme-toggle" onclick="toggleTheme()">
+                    <i class="fas fa-moon" id="themeIcon"></i>
+                </button>
+
+                <div class="user-profile">
+                    <img src="https://ui-avatars.com/api/?name=User&background=6366f1&color=fff" alt="User">
+                    <span id="userName">Foydalanuvchi</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Dashboard Content -->
+        <div class="page-content">
+            <div class="page-header">
+                <h1>Dashboard</h1>
+                <div class="date-selector">
+                    <button class="btn-secondary" onclick="changeFilter('today')">Bugun</button>
+                    <button class="btn-secondary" onclick="changeFilter('week')">Hafta</button>
+                    <button class="btn-secondary" onclick="changeFilter('month')">Oy</button>
+                    <button class="btn-secondary" onclick="changeFilter('year')">Yil</button>
+                </div>
+            </div>
+
+            <!-- Stats Cards -->
+            <div class="stats-grid">
+                <div class="stat-card income">
+                    <div class="stat-icon">
+                        <i class="fas fa-arrow-up"></i>
+                    </div>
+                    <div class="stat-info">
+                        <p class="stat-label">Bugungi Daromad</p>
+                        <h3 class="stat-value" id="todayIncome">0 so'm</h3>
+                        <span class="stat-trend positive">
+                            <i class="fas fa-arrow-up"></i> 12.5%
+                        </span>
+                    </div>
+                </div>
+
+                <div class="stat-card expense">
+                    <div class="stat-icon">
+                        <i class="fas fa-arrow-down"></i>
+                    </div>
+
+                    <div class="stat-info">
+                        <p class="stat-label">Bugungi Xarajat</p>
+                        <h3 class="stat-value" id="todayExpense">0 so'm</h3>
+                        <span class="stat-trend negative">
+                            <i class="fas fa-arrow-down"></i> 8.2%
+                        </span>
+                    </div>
+                </div>
+
+                <div class="stat-card balance">
+                    <div class="stat-icon">
+                        <i class="fas fa-wallet"></i>
+                    </div>
+                    <div class="stat-info">
+                        <p class="stat-label">Umumiy Balans</p>
+                        <h3 class="stat-value" id="totalBalance">0 so'm</h3>
+                    </div>
+                </div>
+
+                <div class="stat-card profit">
+                    <div class="stat-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <div class="stat-info">
+                        <p class="stat-label">Sof Foyda</p>
+                        <h3 class="stat-value" id="netProfit">0 so'm</h3>
+                    </div>
+                </div>
+
+                <div class="stat-card customers">
+                    <div class="stat-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="stat-info">
+                        <p class="stat-label">Jami Mijozlar</p>
+                        <h3 class="stat-value" id="totalCustomers">0</h3>
+                    </div>
+                </div>
+
+                <div class="stat-card debts">
+
+                    <div class="stat-icon">
+                        <i class="fas fa-hand-holding-usd"></i>
+                    </div>
+                    <div class="stat-info">
+                        <p class="stat-label">Kutilayotgan Qarzlar</p>
+                        <h3 class="stat-value" id="pendingDebts">0 so'm</h3>
+                    </div>
+                </div>
+
+                <div class="stat-card weekly-income">
+                    <div class="stat-icon">
+                        <i class="fas fa-calendar-week"></i>
+                    </div>
+                    <div class="stat-info">
+                        <p class="stat-label">Haftalik Daromad</p>
+                        <h3 class="stat-value" id="weeklyIncome">0 so'm</h3>
+                    </div>
+                </div>
+
+                <div class="stat-card monthly-income">
+                    <div class="stat-icon">
+                        <i class="fas fa-calendar-alt"></i>
+                    </div>
+                    <div class="stat-info">
+                        <p class="stat-label">Oylik Daromad</p>
+                        <h3 class="stat-value" id="monthlyIncome">0 so'm</h3>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Charts Section -->
+            <div class="charts-grid">
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3>Daromad va Xarajat Grafigi</h3>
+                    </div>
+                    <canvas id="incomeExpenseChart"></canvas>
+                </div>
+
+                <div class="chart-card">
+
+                    <div class="chart-header">
+                        <h3>Kategoriya bo'yicha</h3>
+                    </div>
+                    <canvas id="categoryChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Recent Transactions -->
+            <div class="table-card">
+                <div class="table-header">
+                    <h3>So'nggi Tranzaksiyalar</h3>
+                    <button class="btn-primary" onclick="window.location.href='income.html'">
+                        <i class="fas fa-plus"></i> Yangi qo'shish
+                    </button>
+                </div>
+                <div class="table-responsive">
+                    <table id="recentTransactions">
+                        <thead>
+                            <tr>
+                                <th>Sana</th>
+                                <th>Turi</th>
+                                <th>Kategoriya</th>
+                                <th>Miqdor</th>
+                                <th>Izoh</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Dynamic content -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script src="js/storage.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/dashboard.js"></script>
+</body>
+</html>

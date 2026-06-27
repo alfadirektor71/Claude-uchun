@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daromadlar | Moliyaviy Boshqaruv</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="logo">
+                <i class="fas fa-chart-line"></i>
+                <span>Moliyaviy Tizim</span>
+            </div>
+            <button class="sidebar-toggle" id="sidebarToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+        
+        <nav class="sidebar-nav">
+            <a href="index.html" class="nav-item">
+                <i class="fas fa-home"></i>
+                <span>Dashboard</span>
+            </a>
+            <a href="income.html" class="nav-item active">
+                <i class="fas fa-arrow-up"></i>
+                <span>Daromad</span>
+            </a>
+            <a href="expense.html" class="nav-item">
+                <i class="fas fa-arrow-down"></i>
+                <span>Xarajat</span>
+            </a>
+            <a href="customers.html" class="nav-item">
+                <i class="fas fa-users"></i>
+                <span>Mijozlar</span>
+            </a>
+            <a href="debts.html" class="nav-item">
+                <i class="fas fa-hand-holding-usd"></i>
+                <span>Qarzlar</span>
+            </a>
+            <a href="reports.html" class="nav-item">
+                <i class="fas fa-file-alt"></i>
+                <span>Hisobotlar</span>
+            </a>
+
+            <a href="categories.html" class="nav-item">
+                <i class="fas fa-tags"></i>
+                <span>Kategoriyalar</span>
+            </a>
+            <a href="settings.html" class="nav-item">
+                <i class="fas fa-cog"></i>
+                <span>Sozlamalar</span>
+            </a>
+        </nav>
+
+        <div class="sidebar-footer">
+            <button class="btn-logout" onclick="logout()">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Chiqish</span>
+            </button>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <header class="top-bar">
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" placeholder="Qidirish..." id="globalSearch">
+            </div>
+            
+            <div class="top-actions">
+                <button class="theme-toggle" onclick="toggleTheme()">
+                    <i class="fas fa-moon" id="themeIcon"></i>
+                </button>
+                <div class="user-profile">
+                    <img src="https://ui-avatars.com/api/?name=User&background=6366f1&color=fff" alt="User">
+                    <span id="userName">Foydalanuvchi</span>
+                </div>
+            </div>
+        </header>
+
+        <div class="page-content">
+            <div class="page-header">
+                <h1>Daromadlar</h1>
+                <button class="btn-primary" onclick="openIncomeModal()">
+                    <i class="fas fa-plus"></i> Yangi daromad
+                </button>
+            </div>
+
+            <!-- Filter Section -->
+            <div class="table-card" style="margin-bottom: 20px;">
+
+                <div style="display: flex; gap: 15px; flex-wrap: wrap;">
+                    <div class="form-group" style="flex: 1; min-width: 200px;">
+                        <label class="form-label">Sana (dan)</label>
+                        <input type="date" class="form-input" id="filterDateFrom">
+                    </div>
+                    <div class="form-group" style="flex: 1; min-width: 200px;">
+                        <label class="form-label">Sana (gacha)</label>
+                        <input type="date" class="form-input" id="filterDateTo">
+                    </div>
+                    <div class="form-group" style="flex: 1; min-width: 200px;">
+                        <label class="form-label">Kategoriya</label>
+                        <select class="form-select" id="filterCategory">
+                            <option value="">Barchasi</option>
+                        </select>
+                    </div>
+                    <div style="align-self: flex-end;">
+                        <button class="btn-primary" onclick="filterIncomes()">
+                            <i class="fas fa-filter"></i> Filter
+                        </button>
+                        <button class="btn-secondary" onclick="resetFilters()">
+                            <i class="fas fa-redo"></i> Tozalash
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Income Table -->
+            <div class="table-card">
+                <div class="table-header">
+                    <h3>Daromadlar ro'yxati</h3>
+                    <div style="display: flex; gap: 10px;">
+                        <span class="badge badge-success" style="font-size: 16px; padding: 8px 16px;">
+                            Jami: <strong id="totalIncomeAmount">0 so'm</strong>
+                        </span>
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table id="incomeTable">
+                        <thead>
+                            <tr>
+                                <th>Sana</th>
+                                <th>Miqdor</th>
+                                <th>Kategoriya</th>
+                                <th>Mijoz</th>
+                                <th>To'lov usuli</th>
+                                <th>Izoh</th>
+                                <th>Amallar</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Dynamic content -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+
+
+    <!-- Income Modal -->
+    <div class="modal" id="incomeModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle">Yangi daromad qo'shish</h2>
+                <button class="modal-close" onclick="closeIncomeModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <form id="incomeForm" onsubmit="saveIncome(event)">
+                <input type="hidden" id="incomeId">
+                
+                <div class="form-group">
+                    <label class="form-label">Miqdor (so'm) *</label>
+                    <input type="number" class="form-input" id="incomeAmount" required min="0" step="0.01">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Kategoriya *</label>
+                    <select class="form-select" id="incomeCategory" required>
+                        <option value="">Tanlang</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Mijoz</label>
+                    <select class="form-select" id="incomeCustomer">
+                        <option value="">Tanlang</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Izoh</label>
+                    <input type="text" class="form-input" id="incomeDescription">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">To'lov usuli *</label>
+                    <select class="form-select" id="incomePaymentMethod" required>
+                        <option value="Naqd">Naqd</option>
+                        <option value="Karta">Karta</option>
+                        <option value="Bank">Bank</option>
+                        <option value="Payme">Payme</option>
+                        <option value="Click">Click</option>
+                        <option value="Boshqa">Boshqa</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Sana *</label>
+                    <input type="date" class="form-input" id="incomeDate" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Qo'shimcha eslatma</label>
+                    <textarea class="form-textarea" id="incomeNotes"></textarea>
+                </div>
+                
+                <div style="display: flex; gap: 10px; justify-content: flex-end;">
+                    <button type="button" class="btn-secondary" onclick="closeIncomeModal()">Bekor qilish</button>
+                    <button type="submit" class="btn-primary">Saqlash</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script src="js/storage.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/income.js"></script>
+</body>
+</html>

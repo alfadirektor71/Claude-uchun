@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mijozlar | Moliyaviy Boshqaruv</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="logo"><i class="fas fa-chart-line"></i><span>Moliyaviy Tizim</span></div>
+            <button class="sidebar-toggle" id="sidebarToggle"><i class="fas fa-bars"></i></button>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="index.html" class="nav-item"><i class="fas fa-home"></i><span>Dashboard</span></a>
+            <a href="income.html" class="nav-item"><i class="fas fa-arrow-up"></i><span>Daromad</span></a>
+            <a href="expense.html" class="nav-item"><i class="fas fa-arrow-down"></i><span>Xarajat</span></a>
+            <a href="customers.html" class="nav-item active"><i class="fas fa-users"></i><span>Mijozlar</span></a>
+            <a href="debts.html" class="nav-item"><i class="fas fa-hand-holding-usd"></i><span>Qarzlar</span></a>
+            <a href="reports.html" class="nav-item"><i class="fas fa-file-alt"></i><span>Hisobotlar</span></a>
+            <a href="categories.html" class="nav-item"><i class="fas fa-tags"></i><span>Kategoriyalar</span></a>
+            <a href="settings.html" class="nav-item"><i class="fas fa-cog"></i><span>Sozlamalar</span></a>
+        </nav>
+        <div class="sidebar-footer">
+            <button class="btn-logout" onclick="logout()"><i class="fas fa-sign-out-alt"></i><span>Chiqish</span></button>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <header class="top-bar">
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" placeholder="Qidirish..." id="globalSearch">
+            </div>
+            <div class="top-actions">
+                <button class="theme-toggle" onclick="toggleTheme()"><i class="fas fa-moon" id="themeIcon"></i></button>
+                <div class="user-profile">
+                    <img src="https://ui-avatars.com/api/?name=User&background=6366f1&color=fff" alt="User">
+                    <span>Foydalanuvchi</span>
+                </div>
+            </div>
+        </header>
+
+        <div class="page-content">
+            <div class="page-header">
+                <h1>Mijozlar</h1>
+                <button class="btn-primary" onclick="openCustomerModal()">
+                    <i class="fas fa-plus"></i> Yangi mijoz
+                </button>
+            </div>
+
+            <div class="table-card">
+                <div class="table-header">
+                    <h3>Mijozlar ro'yxati</h3>
+                    <span class="badge badge-success" style="font-size: 16px; padding: 8px 16px;">
+                        Jami: <strong id="totalCustomers">0</strong>
+                    </span>
+                </div>
+                <div class="table-responsive">
+                    <table id="customerTable">
+                        <thead>
+                            <tr>
+                                <th>To'liq ism</th>
+                                <th>Telefon</th>
+                                <th>Telegram</th>
+                                <th>Jami to'lovlar</th>
+                                <th>Qarz</th>
+                                <th>Amallar</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+
+
+    <div class="modal" id="customerModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle">Yangi mijoz qo'shish</h2>
+                <button class="modal-close" onclick="closeCustomerModal()"><i class="fas fa-times"></i></button>
+            </div>
+            <form id="customerForm" onsubmit="saveCustomer(event)">
+                <input type="hidden" id="customerId">
+                <div class="form-group">
+                    <label class="form-label">To'liq ism *</label>
+                    <input type="text" class="form-input" id="customerName" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Telefon raqami *</label>
+                    <input type="tel" class="form-input" id="customerPhone" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Telegram</label>
+                    <input type="text" class="form-input" id="customerTelegram" placeholder="@username">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Izoh</label>
+                    <textarea class="form-textarea" id="customerNotes"></textarea>
+                </div>
+                <div style="display: flex; gap: 10px; justify-content: flex-end;">
+                    <button type="button" class="btn-secondary" onclick="closeCustomerModal()">Bekor qilish</button>
+                    <button type="submit" class="btn-primary">Saqlash</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal" id="customerDetailModal">
+        <div class="modal-content" style="max-width: 800px;">
+            <div class="modal-header">
+                <h2>Mijoz ma'lumotlari</h2>
+                <button class="modal-close" onclick="closeCustomerDetailModal()"><i class="fas fa-times"></i></button>
+            </div>
+            <div id="customerDetailContent"></div>
+        </div>
+    </div>
+
+    <script src="js/storage.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/customers.js"></script>
+</body>
+</html>
