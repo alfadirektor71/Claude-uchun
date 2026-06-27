@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - SeenSMS</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <i class="fas fa-chart-line"></i>
+                    <span>SeenSMS</span>
+                </div>
+                <button class="sidebar-toggle" id="sidebarToggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+
+            <nav class="sidebar-nav">
+                <a href="dashboard.html" class="nav-item active">
+                    <i class="fas fa-home"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="new-order.html" class="nav-item">
+                    <i class="fas fa-plus-circle"></i>
+                    <span>Yangi buyurtma</span>
+                    <span class="badge">+20%</span>
+                </a>
+                <a href="orders.html" class="nav-item">
+                    <i class="fas fa-list"></i>
+                    <span>Buyurtmalar</span>
+                    <span class="badge count">5</span>
+                </a>
+                <a href="services.html" class="nav-item">
+                    <i class="fas fa-box"></i>
+                    <span>Xizmatlar</span>
+                </a>
+                <a href="balance.html" class="nav-item">
+                    <i class="fas fa-wallet"></i>
+                    <span>Balans</span>
+                </a>
+                <a href="reports.html" class="nav-item">
+                    <i class="fas fa-chart-bar"></i>
+                    <span>Hisobotlar</span>
+                </a>
+                <a href="tickets.html" class="nav-item">
+                    <i class="fas fa-ticket-alt"></i>
+                    <span>Yordam</span>
+                    <span class="badge count">2</span>
+                </a>
+                
+                <div class="nav-divider"></div>
+                
+                <a href="settings.html" class="nav-item">
+                    <i class="fas fa-cog"></i>
+                    <span>Sozlamalar</span>
+                </a>
+                <a href="api.html" class="nav-item">
+                    <i class="fas fa-code"></i>
+                    <span>API</span>
+                </a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <div class="user-card">
+                    <div class="user-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="user-info">
+                        <h4 id="userName">Foydalanuvchi</h4>
+                        <p id="userPlan">Professional</p>
+                    </div>
+                    <button class="logout-btn" onclick="logout()">
+                        <i class="fas fa-sign-out-alt"></i>
+                    </button>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Top Bar -->
+            <header class="top-bar">
+                <div class="top-bar-left">
+                    <button class="mobile-toggle" id="mobileToggle">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <h1>Dashboard</h1>
+                </div>
+                <div class="top-bar-right">
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" placeholder="Qidirish...">
+                    </div>
+                    <button class="notification-btn">
+                        <i class="fas fa-bell"></i>
+                        <span class="notification-badge">3</span>
+                    </button>
+                    <button class="theme-toggle" onclick="toggleTheme()">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                </div>
+            </header>
+
+            <!-- Welcome Banner -->
+            <section class="welcome-banner">
+                <div class="banner-content">
+                    <div class="banner-text">
+                        <h2>Xush kelibsiz, <span id="welcomeName">Foydalanuvchi</span>! 👋</h2>
+                        <p>Bugun juda yaxshi kun! Sizning loyihalaringiz muvaffaqiyatli rivojlanmoqda.</p>
+                    </div>
+                    <div class="banner-actions">
+                        <a href="new-order.html" class="btn btn-primary">
+                            <i class="fas fa-plus"></i>
+                            <span>Yangi buyurtma</span>
+                        </a>
+                        <a href="balance.html" class="btn btn-outline">
+                            <i class="fas fa-wallet"></i>
+                            <span>Balansni to'ldirish</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="banner-illustration">
+                    <i class="fas fa-rocket"></i>
+                </div>
+            </section>
+
+            <!-- Stats Cards -->
+            <section class="stats-section">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon blue">
+                            <i class="fas fa-wallet"></i>
+                        </div>
+                        <div class="stat-info">
+                            <p class="stat-label">Balans</p>
+                            <h3 class="stat-value" id="balanceAmount">$0.00</h3>
+                            <div class="stat-change positive">
+                                <i class="fas fa-arrow-up"></i>
+                                <span>+12.5%</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon green">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <div class="stat-info">
+                            <p class="stat-label">Bajarilgan</p>
+                            <h3 class="stat-value" id="completedOrders">0</h3>
+                            <div class="stat-change positive">
+                                <i class="fas fa-arrow-up"></i>
+                                <span>+8.2%</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon orange">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="stat-info">
+                            <p class="stat-label">Jarayonda</p>
+                            <h3 class="stat-value" id="pendingOrders">0</h3>
+                            <div class="stat-change neutral">
+                                <i class="fas fa-minus"></i>
+                                <span>0%</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon purple">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <div class="stat-info">
+                            <p class="stat-label">Jami sarflangan</p>
+                            <h3 class="stat-value" id="totalSpent">$0.00</h3>
+                            <div class="stat-change positive">
+                                <i class="fas fa-arrow-up"></i>
+                                <span>+15.3%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Charts Section -->
+            <section class="charts-section">
+                <div class="charts-grid">
+                    <!-- Order Statistics -->
+                    <div class="chart-card">
+                        <div class="card-header">
+                            <h3>
+                                <i class="fas fa-chart-bar"></i>
+                                Buyurtmalar statistikasi
+                            </h3>
+                            <select class="period-select">
+                                <option value="7">7 kun</option>
+                                <option value="30" selected>30 kun</option>
+                                <option value="90">90 kun</option>
+                            </select>
+                        </div>
+                        <div class="chart-body">
+                            <div class="chart-placeholder" id="ordersChart">
+                                <div class="chart-bar" style="height: 60%;"></div>
+                                <div class="chart-bar" style="height: 80%;"></div>
+                                <div class="chart-bar" style="height: 45%;"></div>
+                                <div class="chart-bar" style="height: 90%;"></div>
+                                <div class="chart-bar" style="height: 70%;"></div>
+                                <div class="chart-bar" style="height: 85%;"></div>
+                                <div class="chart-bar" style="height: 65%;"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quick Stats -->
+                    <div class="chart-card">
+                        <div class="card-header">
+                            <h3>
+                                <i class="fas fa-bolt"></i>
+                                Tezkor ma'lumotlar
+                            </h3>
+                        </div>
+                        <div class="quick-stats">
+                            <div class="quick-stat-item">
+                                <div class="quick-stat-icon blue">
+                                    <i class="fab fa-telegram"></i>
+                                </div>
+                                <div class="quick-stat-info">
+                                    <p>Telegram</p>
+                                    <h4>2,450</h4>
+                                </div>
+                                <div class="quick-stat-progress">
+                                    <div class="progress-bar" style="width: 75%;"></div>
+                                </div>
+                            </div>
+
+                            <div class="quick-stat-item">
+                                <div class="quick-stat-icon green">
+                                    <i class="fas fa-sms"></i>
+                                </div>
+                                <div class="quick-stat-info">
+                                    <p>SMS</p>
+                                    <h4>1,850</h4>
+                                </div>
+                                <div class="quick-stat-progress">
+                                    <div class="progress-bar" style="width: 60%;"></div>
+                                </div>
+                            </div>
+
+                            <div class="quick-stat-item">
+                                <div class="quick-stat-icon purple">
+                                    <i class="fab fa-instagram"></i>
+                                </div>
+                                <div class="quick-stat-info">
+                                    <p>Instagram</p>
+                                    <h4>980</h4>
+                                </div>
+                                <div class="quick-stat-progress">
+                                    <div class="progress-bar" style="width: 40%;"></div>
+                                </div>
+                            </div>
+
+                            <div class="quick-stat-item">
+                                <div class="quick-stat-icon orange">
+                                    <i class="fab fa-youtube"></i>
+                                </div>
+                                <div class="quick-stat-info">
+                                    <p>YouTube</p>
+                                    <h4>650</h4>
+                                </div>
+                                <div class="quick-stat-progress">
+                                    <div class="progress-bar" style="width: 25%;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Recent Orders & Popular Services -->
+            <section class="content-section">
+                <div class="content-grid">
+                    <!-- Recent Orders -->
+                    <div class="content-card">
+                        <div class="card-header">
+                            <h3>
+                                <i class="fas fa-history"></i>
+                                So'nggi buyurtmalar
+                            </h3>
+                            <a href="orders.html" class="view-all">
+                                Barchasini ko'rish
+                                <i class="fas fa-arrow-right"></i>
+                            </a>
+                        </div>
+                        <div class="orders-list" id="recentOrders">
+                            <div class="order-item">
+                                <div class="order-icon blue">
+                                    <i class="fab fa-telegram"></i>
+                                </div>
+                                <div class="order-info">
+                                    <h4>Telegram obunachi</h4>
+                                    <p>1000 obunachi • @mychannel</p>
+                                </div>
+                                <div class="order-status">
+                                    <span class="status-badge in-progress">
+                                        <i class="fas fa-spinner"></i>
+                                        Jarayonda
+                                    </span>
+                                    <p class="order-price">$25.00</p>
+                                </div>
+                            </div>
+
+                            <div class="order-item">
+                                <div class="order-icon green">
+                                    <i class="fas fa-sms"></i>
+                                </div>
+                                <div class="order-info">
+                                    <h4>SMS xizmati</h4>
+                                    <p>Virtual raqam • USA</p>
+                                </div>
+                                <div class="order-status">
+                                    <span class="status-badge completed">
+                                        <i class="fas fa-check"></i>
+                                        Bajarildi
+                                    </span>
+                                    <p class="order-price">$5.00</p>
+                                </div>
+                            </div>
+
+                            <div class="order-item">
+                                <div class="order-icon purple">
+                                    <i class="fab fa-instagram"></i>
+                                </div>
+                                <div class="order-info">
+                                    <h4>Instagram layklar</h4>
+                                    <p>500 layk • Post</p>
+                                </div>
+                                <div class="order-status">
+                                    <span class="status-badge completed">
+                                        <i class="fas fa-check"></i>
+                                        Bajarildi
+                                    </span>
+                                    <p class="order-price">$8.50</p>
+                                </div>
+                            </div>
+
+                            <div class="order-item">
+                                <div class="order-icon orange">
+                                    <i class="fab fa-youtube"></i>
+                                </div>
+                                <div class="order-info">
+                                    <h4>YouTube ko'rishlar</h4>
+                                    <p>2000 ko'rish • Video</p>
+                                </div>
+                                <div class="order-status">
+                                    <span class="status-badge pending">
+                                        <i class="fas fa-clock"></i>
+                                        Kutilmoqda
+                                    </span>
+                                    <p class="order-price">$12.00</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Popular Services -->
+                    <div class="content-card">
+                        <div class="card-header">
+                            <h3>
+                                <i class="fas fa-fire"></i>
+                                Mashhur xizmatlar
+                            </h3>
+                            <a href="services.html" class="view-all">
+                                Barchasini ko'rish
+                                <i class="fas fa-arrow-right"></i>
+                            </a>
+                        </div>
+                        <div class="services-list">
+                            <div class="service-item">
+                                <div class="service-icon blue">
+                                    <i class="fab fa-telegram"></i>
+                                </div>
+                                <div class="service-info">
+                                    <h4>Telegram Members</h4>
+                                    <p>Real obunachiler</p>
+                                </div>
+                                <div class="service-action">
+                                    <p class="service-price">$0.02<span>/dona</span></p>
+                                    <a href="new-order.html?service=telegram-members" class="btn-icon">
+                                        <i class="fas fa-shopping-cart"></i>
+                                    </a>
+                                </div>
+                            </div>
+
+                            <div class="service-item">
+                                <div class="service-icon green">
+                                    <i class="fas fa-sms"></i>
+                                </div>
+                                <div class="service-info">
+                                    <h4>SMS Verification</h4>
+                                    <p>100+ davlat</p>
+                                </div>
+                                <div class="service-action">
+                                    <p class="service-price">$0.50<span>/sms</span></p>
+                                    <a href="new-order.html?service=sms" class="btn-icon">
+                                        <i class="fas fa-shopping-cart"></i>
+                                    </a>
+                                </div>
+                            </div>
+
+                            <div class="service-item">
+                                <div class="service-icon purple">
+                                    <i class="fab fa-instagram"></i>
+                                </div>
+                                <div class="service-info">
+                                    <h4>Instagram Followers</h4>
+                                    <p>HQ obunachiler</p>
+                                </div>
+                                <div class="service-action">
+                                    <p class="service-price">$0.01<span>/dona</span></p>
+                                    <a href="new-order.html?service=instagram-followers" class="btn-icon">
+                                        <i class="fas fa-shopping-cart"></i>
+                                    </a>
+                                </div>
+                            </div>
+
+                            <div class="service-item">
+                                <div class="service-icon orange">
+                                    <i class="fab fa-youtube"></i>
+                                </div>
+                                <div class="service-info">
+                                    <h4>YouTube Views</h4>
+                                    <p>Real ko'rishlar</p>
+                                </div>
+                                <div class="service-action">
+                                    <p class="service-price">$0.005<span>/ko'rish</span></p>
+                                    <a href="new-order.html?service=youtube-views" class="btn-icon">
+                                        <i class="fas fa-shopping-cart"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Notifications & Tips -->
+            <section class="info-section">
+                <div class="info-grid">
+                    <!-- Notifications -->
+                    <div class="info-card notifications-card">
+                        <div class="card-header">
+                            <h3>
+                                <i class="fas fa-bell"></i>
+                                Bildirishnomalar
+                            </h3>
+                            <button class="mark-all-read">
+                                <i class="fas fa-check-double"></i>
+                                Barchasini o'qilgan
+                            </button>
+                        </div>
+                        <div class="notifications-list">
+                            <div class="notification-item unread">
+                                <div class="notification-icon success">
+                                    <i class="fas fa-check-circle"></i>
+                                </div>
+                                <div class="notification-content">
+                                    <p><strong>Buyurtma bajarildi</strong></p>
+                                    <p>Telegram obunachi buyurtmangiz muvaffaqiyatli bajarildi</p>
+                                    <span class="notification-time">5 daqiqa oldin</span>
+                                </div>
+                            </div>
+
+                            <div class="notification-item unread">
+                                <div class="notification-icon info">
+                                    <i class="fas fa-info-circle"></i>
+                                </div>
+                                <div class="notification-content">
+                                    <p><strong>Yangi xizmat qo'shildi</strong></p>
+                                    <p>TikTok ko'rishlar xizmati endi mavjud</p>
+                                    <span class="notification-time">2 soat oldin</span>
+                                </div>
+                            </div>
+
+                            <div class="notification-item">
+                                <div class="notification-icon warning">
+                                    <i class="fas fa-exclamation-circle"></i>
+                                </div>
+                                <div class="notification-content">
+                                    <p><strong>Balans kam</strong></p>
+                                    <p>Hisobingizni to'ldirish kerak</p>
+                                    <span class="notification-time">1 kun oldin</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tips Card -->
+                    <div class="info-card tips-card">
+                        <div class="card-header">
+                            <h3>
+                                <i class="fas fa-lightbulb"></i>
+                                Foydali maslahatlar
+                            </h3>
+                        </div>
+                        <div class="tips-content">
+                            <div class="tip-item">
+                                <div class="tip-number">1</div>
+                                <div class="tip-text">
+                                    <h4>API dan foydalaning</h4>
+                                    <p>Buyurtmalarni avtomatlashtiring va vaqtingizni tejang</p>
+                                </div>
+                            </div>
+
+                            <div class="tip-item">
+                                <div class="tip-number">2</div>
+                                <div class="tip-text">
+                                    <h4>Balansni to'ldiring</h4>
+                                    <p>Ko'proq to'ldirganda qo'shimcha bonuslar oling</p>
+                                </div>
+                            </div>
+
+                            <div class="tip-item">
+                                <div class="tip-number">3</div>
+                                <div class="tip-text">
+                                    <h4>Referal dastur</h4>
+                                    <p>Do'stlaringizni taklif qiling va 10% komissiya oling</p>
+                                </div>
+                            </div>
+
+                            <a href="tips.html" class="view-more-tips">
+                                Ko'proq maslahatlar
+                                <i class="fas fa-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="js/storage.js"></script>
+    <script src="js/dashboard.js"></script>
+</body>
+</html>
