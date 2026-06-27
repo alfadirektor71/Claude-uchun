@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ro'yxatdan o'tish - SeenSMS</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/auth.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="auth-container">
+        <div class="auth-wrapper">
+            <!-- Left Side - Form -->
+            <div class="auth-form-section">
+                <div class="auth-header">
+                    <a href="index.html" class="back-link">
+                        <i class="fas fa-arrow-left"></i>
+                        <span>Orqaga</span>
+                    </a>
+                    <div class="logo">
+                        <i class="fas fa-chart-line"></i>
+                        <span>SeenSMS</span>
+                    </div>
+                </div>
+
+                <div class="auth-content">
+                    <h1>Hisob yarating</h1>
+                    <p class="auth-subtitle">Bepul ro'yxatdan o'ting va boshlang</p>
+
+                    <!-- Alert Messages -->
+                    <div id="alertMessage" class="alert" style="display: none;"></div>
+
+                    <!-- Progress Steps -->
+                    <div class="progress-steps">
+                        <div class="step active">
+                            <div class="step-number">1</div>
+                            <span>Ma'lumotlar</span>
+                        </div>
+                        <div class="step-line"></div>
+                        <div class="step">
+                            <div class="step-number">2</div>
+                            <span>Tasdiqlash</span>
+                        </div>
+                        <div class="step-line"></div>
+                        <div class="step">
+                            <div class="step-number">3</div>
+                            <span>Tugadi</span>
+                        </div>
+                    </div>
+
+                    <form id="registerForm" class="auth-form">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="firstName">
+                                    <i class="fas fa-user"></i>
+                                    Ism
+                                </label>
+                                <input 
+                                    type="text" 
+                                    id="firstName" 
+                                    name="firstName" 
+                                    placeholder="Ismingiz"
+                                    required
+                                >
+                            </div>
+
+                            <div class="form-group">
+                                <label for="lastName">
+                                    <i class="fas fa-user"></i>
+                                    Familiya
+                                </label>
+                                <input 
+                                    type="text" 
+                                    id="lastName" 
+                                    name="lastName" 
+                                    placeholder="Familiyangiz"
+                                    required
+                                >
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email">
+                                <i class="fas fa-envelope"></i>
+                                Email manzil
+                            </label>
+                            <input 
+                                type="email" 
+                                id="email" 
+                                name="email" 
+                                placeholder="example@email.com"
+                                required
+                            >
+                            <small class="form-hint">Tasdiqlash kodi yuboramiz</small>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="phone">
+                                <i class="fas fa-phone"></i>
+                                Telefon raqam
+                            </label>
+                            <input 
+                                type="tel" 
+                                id="phone" 
+                                name="phone" 
+                                placeholder="+998 90 123 45 67"
+                                required
+                            >
+                        </div>
+
+                        <div class="form-group">
+                            <label for="password">
+                                <i class="fas fa-lock"></i>
+                                Parol
+                            </label>
+                            <div class="password-input">
+                                <input 
+                                    type="password" 
+                                    id="password" 
+                                    name="password" 
+                                    placeholder="••••••••"
+                                    required
+                                >
+                                <button type="button" class="toggle-password" onclick="togglePassword('password')">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                            <div class="password-strength" id="passwordStrength">
+                                <div class="strength-bar"></div>
+                            </div>
+                            <small class="form-hint">Kamida 8 ta belgi, katta-kichik harf va raqam</small>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="confirmPassword">
+                                <i class="fas fa-lock"></i>
+                                Parolni tasdiqlang
+                            </label>
+                            <div class="password-input">
+                                <input 
+                                    type="password" 
+                                    id="confirmPassword" 
+                                    name="confirmPassword" 
+                                    placeholder="••••••••"
+                                    required
+                                >
+                                <button type="button" class="toggle-password" onclick="togglePassword('confirmPassword')">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="plan">
+                                <i class="fas fa-box"></i>
+                                Tarif rejasi
+                            </label>
+                            <select id="plan" name="plan" required>
+                                <option value="">Tanlang</option>
+                                <option value="basic">Boshlang'ich - $10/oy</option>
+                                <option value="pro" selected>Professional - $50/oy</option>
+                                <option value="enterprise">Korporativ - $200/oy</option>
+                            </select>
+                        </div>
+
+                        <div class="form-options">
+                            <label class="checkbox-container">
+                                <input type="checkbox" id="terms" name="terms" required>
+                                <span class="checkmark"></span>
+                                <span>Men <a href="terms.html">foydalanish shartlari</a> va <a href="privacy.html">maxfiylik siyosati</a> bilan tanishdim</span>
+                            </label>
+                        </div>
+
+                        <div class="form-options">
+                            <label class="checkbox-container">
+                                <input type="checkbox" id="newsletter" name="newsletter" checked>
+                                <span class="checkmark"></span>
+                                <span>Yangiliklar va takliflardan xabardor bo'lish</span>
+                            </label>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary btn-full btn-large">
+                            <span>Ro'yxatdan o'tish</span>
+                            <i class="fas fa-arrow-right"></i>
+                        </button>
+
+                        <div class="divider">
+                            <span>yoki</span>
+                        </div>
+
+                        <div class="social-login">
+                            <button type="button" class="btn-social btn-google">
+                                <i class="fab fa-google"></i>
+                                <span>Google orqali</span>
+                            </button>
+                            <button type="button" class="btn-social btn-telegram">
+                                <i class="fab fa-telegram"></i>
+                                <span>Telegram orqali</span>
+                            </button>
+                        </div>
+
+                        <div class="auth-footer">
+                            <p>Hisobingiz bormi? <a href="login.html">Kirish</a></p>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Right Side - Info -->
+            <div class="auth-info-section">
+                <div class="info-content">
+                    <div class="info-icon">
+                        <i class="fas fa-gift"></i>
+                    </div>
+                    <h2>Birinchi buyurtmada 20% chegirma!</h2>
+                    <p>Bugun ro'yxatdan o'ting va maxsus chegirmadan foydalaning</p>
+                    
+                    <div class="promo-box">
+                        <div class="promo-header">
+                            <i class="fas fa-tag"></i>
+                            <span>Maxsus taklif</span>
+                        </div>
+                        <h3>WELCOME20</h3>
+                        <p>Promo kod</p>
+                    </div>
+
+                    <div class="info-features">
+                        <div class="info-feature">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Darhol boshlanadi</span>
+                        </div>
+                        <div class="info-feature">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Kredit karta talab qilinmaydi</span>
+                        </div>
+                        <div class="info-feature">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Istalgan vaqt bekor qiling</span>
+                        </div>
+                        <div class="info-feature">
+                            <i class="fas fa-check-circle"></i>
+                            <span>24/7 yordam</span>
+                        </div>
+                    </div>
+
+                    <div class="testimonial-mini">
+                        <div class="stars">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <p>"Ajoyib platforma! Juda qulay va tez ishlaydigan xizmatlar."</p>
+                        <div class="author">
+                            <strong>Sardor A.</strong>
+                            <span>SMM mutaxassis</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Floating Elements -->
+                <div class="floating-element element-1">
+                    <i class="fas fa-percentage"></i>
+                </div>
+                <div class="floating-element element-2">
+                    <i class="fas fa-gift"></i>
+                </div>
+                <div class="floating-element element-3">
+                    <i class="fas fa-star"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/storage.js"></script>
+    <script src="js/auth.js"></script>
+</body>
+</html>
