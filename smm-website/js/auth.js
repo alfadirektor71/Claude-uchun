@@ -85,12 +85,11 @@ document.getElementById('registerForm')?.addEventListener('submit', function(e) 
     const phone = document.getElementById('phone').value;
     const password = document.getElementById('password').value;
     const confirmPassword = document.getElementById('confirmPassword').value;
-    const plan = document.getElementById('plan').value;
     const terms = document.getElementById('terms').checked;
     const newsletter = document.getElementById('newsletter').checked;
     
     // Validate
-    if (!firstName || !lastName || !email || !phone || !password || !confirmPassword || !plan) {
+    if (!firstName || !lastName || !email || !phone || !password || !confirmPassword) {
         showAlert('Iltimos, barcha maydonlarni to\'ldiring', 'error');
         return;
     }
@@ -110,14 +109,14 @@ document.getElementById('registerForm')?.addEventListener('submit', function(e) 
         return;
     }
     
-    // Try to register
+    // Try to register with default basic plan
     const result = userManager.register({
         firstName,
         lastName,
         email,
         phone,
         password,
-        plan
+        plan: 'basic' // Default bepul plan
     });
     
     if (result.success) {
@@ -137,11 +136,42 @@ document.getElementById('registerForm')?.addEventListener('submit', function(e) 
 // Password strength indicator for register page
 document.getElementById('password')?.addEventListener('input', updatePasswordStrength);
 
-// Social login handlers (demo only)
+// Social login handlers - simplified auto login
 document.querySelectorAll('.btn-social').forEach(button => {
-    button.addEventListener('click', function() {
+    button.addEventListener('click', function(e) {
+        e.preventDefault();
         const provider = this.classList.contains('btn-google') ? 'Google' : 'Telegram';
-        showAlert(`${provider} orqali kirish hozircha ishlamaydi`, 'warning');
+        
+        // Create a quick social user
+        const randomId = Date.now();
+        const socialUser = {
+            id: 'social-' + randomId,
+            firstName: provider,
+            lastName: 'User',
+            email: `${provider.toLowerCase()}user${randomId}@seensms.uz`,
+            phone: '+998900000000',
+            password: 'social-login-' + randomId,
+            plan: 'basic',
+            balance: 50.00,
+            createdAt: new Date().toISOString(),
+            verified: true,
+            provider: provider
+        };
+        
+        // Add to users
+        const users = storage.get('users') || [];
+        users.push(socialUser);
+        storage.set('users', users);
+        
+        // Auto login
+        userManager.currentUser = socialUser;
+        storage.set('currentUser', socialUser);
+        
+        showAlert(`${provider} orqali muvaffaqiyatli kirdingiz!`, 'success');
+        
+        setTimeout(() => {
+            window.location.href = 'dashboard.html';
+        }, 1000);
     });
 });
 

@@ -17,7 +17,7 @@ function loadDashboardData() {
     
     // Update user info
     document.getElementById('userName').textContent = user.firstName;
-    document.getElementById('userPlan').textContent = user.plan.charAt(0).toUpperCase() + user.plan.slice(1);
+    document.getElementById('userPlan').textContent = 'Bepul Foydalanuvchi';
     document.getElementById('welcomeName').textContent = user.firstName;
     
     // Get statistics
