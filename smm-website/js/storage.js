@@ -105,11 +105,16 @@ class UserManager {
     login(email, password, remember = false) {
         try {
             const users = storage.get('users') || [];
+            console.log('Login attempt:', email, 'Available users:', users.length);
+            
             const user = users.find(u => u.email === email && u.password === password);
 
             if (!user) {
+                console.log('User not found or password incorrect');
                 return { success: false, message: 'Email yoki parol noto\'g\'ri' };
             }
+
+            console.log('User found:', user.email);
 
             // Set current user
             this.currentUser = user;
@@ -607,9 +612,15 @@ function initializeDemoData() {
     console.log('Demo data initialized');
 }
 
-// Auto-initialize on first load
+// Auto-initialize when script loads
 if (typeof window !== 'undefined') {
+    // Initialize immediately
     initializeDemoData();
+    
+    // Also initialize on page load
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initializeDemoData);
+    }
 }
 
 

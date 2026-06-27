@@ -52,9 +52,9 @@ function updatePasswordStrength() {
 document.getElementById('loginForm')?.addEventListener('submit', function(e) {
     e.preventDefault();
     
-    const email = document.getElementById('email').value;
+    const email = document.getElementById('email').value.trim();
     const password = document.getElementById('password').value;
-    const remember = document.getElementById('remember').checked;
+    const remember = document.getElementById('remember')?.checked || false;
     
     // Validate
     if (!email || !password) {
@@ -62,8 +62,33 @@ document.getElementById('loginForm')?.addEventListener('submit', function(e) {
         return;
     }
     
+    // Make sure demo data exists
+    const users = storage.get('users') || [];
+    console.log('Existing users:', users);
+    
+    // If no users, create demo user
+    if (users.length === 0) {
+        const demoUser = {
+            id: 'demo-user-1',
+            firstName: 'Demo',
+            lastName: 'User',
+            email: 'demo@seensms.uz',
+            phone: '+998901234567',
+            password: 'demo123',
+            plan: 'basic',
+            balance: 100.00,
+            createdAt: new Date().toISOString(),
+            verified: true
+        };
+        users.push(demoUser);
+        storage.set('users', users);
+        console.log('Demo user created');
+    }
+    
     // Try to login
     const result = userManager.login(email, password, remember);
+    
+    console.log('Login result:', result);
     
     if (result.success) {
         showAlert(result.message, 'success');
