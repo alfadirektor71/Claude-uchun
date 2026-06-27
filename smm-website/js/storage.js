@@ -86,9 +86,9 @@ class UserManager {
                 phone: userData.phone,
                 password: userData.password, // In production, this should be hashed
                 plan: userData.plan || 'basic',
-                balance: 0,
+                balance: 50.00, // Boshlang'ich bonus
                 createdAt: new Date().toISOString(),
-                verified: false
+                verified: true // Avtomatik tasdiqlangan
             };
 
             users.push(newUser);
@@ -537,7 +537,8 @@ function checkAuth() {
 // Initialize demo data
 function initializeDemoData() {
     // Check if already initialized
-    if (storage.get('demoInitialized')) return;
+    const existingUsers = storage.get('users');
+    if (existingUsers && existingUsers.length > 0) return;
     
     // Create demo user
     const demoUser = {
@@ -547,7 +548,7 @@ function initializeDemoData() {
         email: 'demo@seensms.uz',
         phone: '+998901234567',
         password: 'demo123',
-        plan: 'professional',
+        plan: 'basic',
         balance: 100.00,
         createdAt: new Date().toISOString(),
         verified: true
@@ -603,13 +604,12 @@ function initializeDemoData() {
     
     storage.set('transactions', demoTransactions);
     
-    storage.set('demoInitialized', true);
     console.log('Demo data initialized');
 }
 
-// Initialize demo data on load
+// Auto-initialize on first load
 if (typeof window !== 'undefined') {
-    window.addEventListener('DOMContentLoaded', () => {
-        initializeDemoData();
-    });
+    initializeDemoData();
 }
+
+
