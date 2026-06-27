@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kirish | Moliyaviy Boshqaruv</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .login-container {
+            background: var(--bg-card);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            width: 100%;
+            max-width: 400px;
+            animation: slideIn 0.5s ease;
+        }
+        .login-logo {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .login-logo i {
+            font-size: 60px;
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+        .login-logo h1 {
+            font-size: 24px;
+            color: var(--text-primary);
+            margin-bottom: 5px;
+        }
+        .login-logo p {
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+        .welcome-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .welcome-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.4);
+        }
+        .info-text {
+            text-align: center;
+            margin-top: 20px;
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-logo">
+            <i class="fas fa-chart-line"></i>
+            <h1>Moliyaviy Boshqaruv Tizimi</h1>
+            <p>Professional biznes hisob-kitob dasturi</p>
+        </div>
+        
+        <button class="welcome-btn" onclick="enterSystem()">
+            <i class="fas fa-sign-in-alt" style="margin-right: 10px;"></i>
+            Tizimga Kirish
+        </button>
+        
+        <div class="info-text">
+            <p>Barcha ma'lumotlaringiz xavfsiz saqlanadi</p>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+    <script>
+        function enterSystem() {
+            window.location.href = 'index.html';
+        }
+        
+        // Enter tugmasini bosish
+        document.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                enterSystem();
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sozlamalar | Moliyaviy Boshqaruv</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="logo"><i class="fas fa-chart-line"></i><span>Moliyaviy Tizim</span></div>
+            <button class="sidebar-toggle" id="sidebarToggle"><i class="fas fa-bars"></i></button>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="index.html" class="nav-item"><i class="fas fa-home"></i><span>Dashboard</span></a>
+            <a href="income.html" class="nav-item"><i class="fas fa-arrow-up"></i><span>Daromad</span></a>
+            <a href="expense.html" class="nav-item"><i class="fas fa-arrow-down"></i><span>Xarajat</span></a>
+            <a href="customers.html" class="nav-item"><i class="fas fa-users"></i><span>Mijozlar</span></a>
+            <a href="debts.html" class="nav-item"><i class="fas fa-hand-holding-usd"></i><span>Qarzlar</span></a>
+            <a href="reports.html" class="nav-item"><i class="fas fa-file-alt"></i><span>Hisobotlar</span></a>
+            <a href="categories.html" class="nav-item"><i class="fas fa-tags"></i><span>Kategoriyalar</span></a>
+            <a href="settings.html" class="nav-item active"><i class="fas fa-cog"></i><span>Sozlamalar</span></a>
+        </nav>
+        <div class="sidebar-footer">
+            <button class="btn-logout" onclick="logout()"><i class="fas fa-sign-out-alt"></i><span>Chiqish</span></button>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <header class="top-bar">
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" placeholder="Qidirish..." id="globalSearch">
+            </div>
+            <div class="top-actions">
+                <button class="theme-toggle" onclick="toggleTheme()"><i class="fas fa-moon" id="themeIcon"></i></button>
+                <div class="user-profile">
+                    <img src="https://ui-avatars.com/api/?name=User&background=6366f1&color=fff" alt="User">
+                    <span>Foydalanuvchi</span>
+                </div>
+            </div>
+        </header>
+
+        <div class="page-content">
+            <div class="page-header">
+                <h1>Sozlamalar</h1>
+            </div>
+
+            <div class="table-card" style="margin-bottom: 20px;">
+                <h3 style="margin-bottom: 20px;">Ko'rinish</h3>
+                <div style="display: flex; gap: 10px; align-items: center;">
+                    <label style="font-weight: 600;">Tema:</label>
+                    <button class="btn-secondary" onclick="setTheme('light')">
+                        <i class="fas fa-sun"></i> Yorug'
+                    </button>
+                    <button class="btn-secondary" onclick="setTheme('dark')">
+                        <i class="fas fa-moon"></i> Qorong'i
+                    </button>
+                </div>
+            </div>
+
+            <div class="table-card" style="margin-bottom: 20px;">
+                <h3 style="margin-bottom: 20px;">Ma'lumotlarni Boshqarish</h3>
+                <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                    <button class="btn-primary" onclick="backupData()">
+                        <i class="fas fa-download"></i> Ma'lumotlarni Yuklab Olish
+                    </button>
+                    <button class="btn-primary" onclick="document.getElementById('restoreInput').click()">
+                        <i class="fas fa-upload"></i> Ma'lumotlarni Tiklash
+                    </button>
+                    <input type="file" id="restoreInput" accept=".json" style="display: none;" onchange="restoreData(event)">
+                    <button class="btn-danger" onclick="clearAllData()">
+                        <i class="fas fa-trash"></i> Barcha Ma'lumotlarni O'chirish
+                    </button>
+                </div>
+            </div>
+
+            <div class="table-card">
+                <h3 style="margin-bottom: 20px;">Tizim Ma'lumotlari</h3>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px;">
+                    <div style="padding: 15px; background: var(--bg-secondary); border-radius: 8px;">
+                        <p style="color: var(--text-secondary); margin-bottom: 5px;">Jami Daromadlar</p>
+                        <h3 id="totalIncomes">0</h3>
+                    </div>
+                    <div style="padding: 15px; background: var(--bg-secondary); border-radius: 8px;">
+                        <p style="color: var(--text-secondary); margin-bottom: 5px;">Jami Xarajatlar</p>
+                        <h3 id="totalExpenses">0</h3>
+                    </div>
+                    <div style="padding: 15px; background: var(--bg-secondary); border-radius: 8px;">
+                        <p style="color: var(--text-secondary); margin-bottom: 5px;">Jami Mijozlar</p>
+                        <h3 id="totalCustomers">0</h3>
+                    </div>
+                    <div style="padding: 15px; background: var(--bg-secondary); border-radius: 8px;">
+                        <p style="color: var(--text-secondary); margin-bottom: 5px;">Jami Qarzlar</p>
+                        <h3 id="totalDebts">0</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="js/storage.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/settings.js"></script>
+</body>
+</html>
