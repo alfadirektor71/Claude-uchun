@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API - SeenSMS</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header"><div class="logo"><i class="fas fa-chart-line"></i><span>SeenSMS</span></div></div>
+            <nav class="sidebar-nav">
+                <a href="dashboard.html" class="nav-item"><i class="fas fa-home"></i><span>Dashboard</span></a>
+                <a href="new-order.html" class="nav-item"><i class="fas fa-plus-circle"></i><span>Yangi buyurtma</span></a>
+                <a href="orders.html" class="nav-item"><i class="fas fa-list"></i><span>Buyurtmalar</span></a>
+                <a href="services.html" class="nav-item"><i class="fas fa-box"></i><span>Xizmatlar</span></a>
+                <a href="balance.html" class="nav-item"><i class="fas fa-wallet"></i><span>Balans</span></a>
+                <a href="reports.html" class="nav-item"><i class="fas fa-chart-bar"></i><span>Hisobotlar</span></a>
+                <a href="tickets.html" class="nav-item"><i class="fas fa-ticket-alt"></i><span>Yordam</span></a>
+                <div class="nav-divider"></div>
+                <a href="settings.html" class="nav-item"><i class="fas fa-cog"></i><span>Sozlamalar</span></a>
+                <a href="api.html" class="nav-item active"><i class="fas fa-code"></i><span>API</span></a>
+            </nav>
+            <div class="sidebar-footer">
+                <div class="user-card">
+                    <div class="user-avatar"><i class="fas fa-user"></i></div>
+                    <div class="user-info"><h4 id="userName">Foydalanuvchi</h4><p>Bepul Foydalanuvchi</p></div>
+                    <button class="logout-btn" onclick="logout()"><i class="fas fa-sign-out-alt"></i></button>
+                </div>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <header class="top-bar">
+                <div class="top-bar-left"><button class="mobile-toggle" id="mobileToggle"><i class="fas fa-bars"></i></button><h1>API Dokumentatsiya</h1></div>
+            </header>
+
+            <section style="padding: 30px;">
+                <div class="content-card" style="margin-bottom: 20px;">
+                    <div class="card-header"><h3><i class="fas fa-key"></i> API Kalit</h3></div>
+                    <div style="padding: 30px;">
+                        <p style="margin-bottom: 20px; color: var(--text-secondary);">API kalitingiz orqali dasturiy tarzda buyurtma berishingiz mumkin.</p>
+                        <div style="display: flex; gap: 15px; align-items: center;">
+                            <input type="text" id="apiKeyInput" value="ssms_xxxxxxxxxxxxxxxxxxxxxxxx" readonly style="flex: 1; font-family: monospace; background: var(--dark-bg); padding: 12px; border: 1px solid var(--border-color); border-radius: 8px;">
+                            <button class="btn btn-primary" onclick="copyApiKey()"><i class="fas fa-copy"></i> Nusxalash</button>
+                            <button class="btn btn-outline" onclick="generateNewKey()"><i class="fas fa-sync"></i> Yangilash</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="content-card" style="margin-bottom: 20px;">
+                    <div class="card-header"><h3><i class="fas fa-book"></i> Baza URL</h3></div>
+                    <div style="padding: 30px;">
+                        <code style="padding: 15px; background: var(--dark-bg); border-radius: 10px; display: block; font-family: monospace;">
+                            https://api.seensms.uz/v1
+                        </code>
+                    </div>
+                </div>
+
+                <div class="content-card">
+                    <div class="card-header"><h3><i class="fas fa-code"></i> API Endpoints</h3></div>
+                    <div style="padding: 30px;">
+                        <h4 style="margin-bottom: 15px;">1. Yangi Buyurtma Yaratish</h4>
+                        <pre style="padding: 20px; background: var(--dark-bg); border-radius: 10px; overflow-x: auto; margin-bottom: 30px;"><code>POST /orders
+
+Headers:
+  Authorization: Bearer YOUR_API_KEY
+  Content-Type: application/json
+
+Body:
+{
+  "service": "telegram-members",
+  "link": "@username",
+  "quantity": 1000
+}
+
+Response:
+{
+  "success": true,
+  "order_id": "12345",
+  "status": "pending"
+}</code></pre>
+
+                        <h4 style="margin-bottom: 15px;">2. Buyurtma Holati</h4>
+                        <pre style="padding: 20px; background: var(--dark-bg); border-radius: 10px; overflow-x: auto; margin-bottom: 30px;"><code>GET /orders/{order_id}
+
+Headers:
+  Authorization: Bearer YOUR_API_KEY
+
+Response:
+{
+  "order_id": "12345",
+  "status": "completed",
+  "progress": 100
+}</code></pre>
+
+                        <h4 style="margin-bottom: 15px;">3. Balans</h4>
+                        <pre style="padding: 20px; background: var(--dark-bg); border-radius: 10px; overflow-x: auto;"><code>GET /balance
+
+Headers:
+  Authorization: Bearer YOUR_API_KEY
+
+Response:
+{
+  "balance": 100.00,
+  "currency": "USD"
+}</code></pre>
+                    </div>
+                </div>
+
+                <div class="content-card" style="margin-top: 20px;">
+                    <div class="card-header"><h3><i class="fas fa-flask"></i> Test API</h3></div>
+                    <div style="padding: 30px;">
+                        <p style="margin-bottom: 20px; color: var(--text-secondary);">API ni to'g'ridan-to'g'ri shu yerda test qilishingiz mumkin.</p>
+                        
+                        <div style="margin-bottom: 20px;">
+                            <label style="display: block; margin-bottom: 8px; font-weight: 500;">Endpoint:</label>
+                            <select id="testEndpoint" style="width: 100%; padding: 12px; background: var(--dark-bg); border: 1px solid var(--border-color); border-radius: 8px;">
+                                <option value="balance">GET /balance - Balansni ko'rish</option>
+                                <option value="orders">GET /orders - Buyurtmalarni ko'rish</option>
+                                <option value="services">GET /services - Xizmatlar ro'yxati</option>
+                            </select>
+                        </div>
+                        
+                        <button class="btn btn-primary" onclick="testApi()" style="width: 100%;"><i class="fas fa-play"></i> Test qilish</button>
+                        
+                        <div id="testResult" style="margin-top: 20px; display: none;">
+                            <h4 style="margin-bottom: 10px;">Natija:</h4>
+                            <pre id="testOutput" style="padding: 20px; background: var(--dark-bg); border-radius: 10px; overflow-x: auto; max-height: 400px;"></pre>
+                        </div>
+                    </div>
+                </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="js/storage.js"></script>
+    <script src="js/dashboard.js"></script>
+    <script>
+        // Check authentication
+        if (!checkAuth()) {
+            window.location.href = 'login.html';
+        }
+        
+        // Load user info and API key
+        const user = userManager.getCurrentUser();
+        if (user) {
+            document.getElementById('userName').textContent = user.firstName;
+            
+            // Generate or load API key
+            let apiKey = user.apiKey;
+            if (!apiKey) {
+                apiKey = 'ssms_' + generateRandomKey();
+                user.apiKey = apiKey;
+                storage.set('users', storage.get('users'));
+            }
+            
+            document.getElementById('apiKeyInput').value = apiKey;
+        }
+        
+        function generateRandomKey() {
+            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+            let result = '';
+            for (let i = 0; i < 32; i++) {
+                result += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            return result;
+        }
+        
+        function copyApiKey() {
+            const input = document.getElementById('apiKeyInput');
+            input.select();
+            navigator.clipboard.writeText(input.value).then(() => {
+                alert('✅ API kalit nusxalandi!');
+            }).catch(() => {
+                document.execCommand('copy');
+                alert('✅ API kalit nusxalandi!');
+            });
+        }
+        
+        function generateNewKey() {
+            if (!confirm('Yangi API kalit yaratmoqchimisiz? Eski kalit ishlamay qoladi.')) {
+                return;
+            }
+            
+            const user = userManager.getCurrentUser();
+            const newKey = 'ssms_' + generateRandomKey();
+            user.apiKey = newKey;
+            
+            // Update user in storage
+            const users = storage.get('users') || [];
+            const userIndex = users.findIndex(u => u.id === user.id);
+            if (userIndex !== -1) {
+                users[userIndex].apiKey = newKey;
+                storage.set('users', users);
+            }
+            
+            document.getElementById('apiKeyInput').value = newKey;
+            alert('✅ Yangi API kalit yaratildi!');
+        }
+        
+        // Test API function
+        function testApi() {
+            const endpoint = document.getElementById('testEndpoint').value;
+            const user = userManager.getCurrentUser();
+            const testResult = document.getElementById('testResult');
+            const testOutput = document.getElementById('testOutput');
+            
+            let response;
+            
+            switch(endpoint) {
+                case 'balance':
+                    response = {
+                        success: true,
+                        balance: user.balance,
+                        currency: 'USD',
+                        timestamp: new Date().toISOString()
+                    };
+                    break;
+                    
+                case 'orders':
+                    const orders = orderManager.getUserOrders(user.id);
+                    response = {
+                        success: true,
+                        count: orders.length,
+                        orders: orders.slice(-5).map(o => ({
+                            id: o.id,
+                            service: o.service,
+                            quantity: o.quantity,
+                            price: o.price,
+                            status: o.status,
+                            progress: o.progress,
+                            created: o.createdAt
+                        }))
+                    };
+                    break;
+                    
+                case 'services':
+                    response = {
+                        success: true,
+                        categories: [
+                            {
+                                id: 'telegram',
+                                name: 'Telegram',
+                                services: [
+                                    { id: 'telegram-members', name: 'O\'zbek Obunachilari', price: 0.05 },
+                                    { id: 'telegram-views', name: 'Post Ko\'rishlari', price: 0.001 },
+                                    { id: 'telegram-reactions', name: 'Reaksiyalar', price: 0.02 }
+                                ]
+                            },
+                            {
+                                id: 'instagram',
+                                name: 'Instagram',
+                                services: [
+                                    { id: 'instagram-followers', name: 'Obunachilari', price: 0.03 },
+                                    { id: 'instagram-likes', name: 'Layklar', price: 0.005 },
+                                    { id: 'instagram-views', name: 'Ko\'rishlar', price: 0.001 }
+                                ]
+                            }
+                        ]
+                    };
+                    break;
+            }
+            
+            testOutput.textContent = JSON.stringify(response, null, 2);
+            testResult.style.display = 'block';
+            
+            // Scroll to result
+            testResult.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+    </script>
+</body>
+</html>

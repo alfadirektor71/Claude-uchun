@@ -86,9 +86,9 @@ class UserManager {
                 phone: userData.phone,
                 password: userData.password, // In production, this should be hashed
                 plan: userData.plan || 'basic',
-                balance: 50.00, // Boshlang'ich bonus
+                balance: 0,
                 createdAt: new Date().toISOString(),
-                verified: true // Avtomatik tasdiqlangan
+                verified: false
             };
 
             users.push(newUser);
@@ -105,16 +105,11 @@ class UserManager {
     login(email, password, remember = false) {
         try {
             const users = storage.get('users') || [];
-            console.log('Login attempt:', email, 'Available users:', users.length);
-            
             const user = users.find(u => u.email === email && u.password === password);
 
             if (!user) {
-                console.log('User not found or password incorrect');
                 return { success: false, message: 'Email yoki parol noto\'g\'ri' };
             }
-
-            console.log('User found:', user.email);
 
             // Set current user
             this.currentUser = user;
@@ -542,8 +537,7 @@ function checkAuth() {
 // Initialize demo data
 function initializeDemoData() {
     // Check if already initialized
-    const existingUsers = storage.get('users');
-    if (existingUsers && existingUsers.length > 0) return;
+    if (storage.get('demoInitialized')) return;
     
     // Create demo user
     const demoUser = {
@@ -553,7 +547,7 @@ function initializeDemoData() {
         email: 'demo@seensms.uz',
         phone: '+998901234567',
         password: 'demo123',
-        plan: 'basic',
+        plan: 'professional',
         balance: 100.00,
         createdAt: new Date().toISOString(),
         verified: true
@@ -609,18 +603,13 @@ function initializeDemoData() {
     
     storage.set('transactions', demoTransactions);
     
+    storage.set('demoInitialized', true);
     console.log('Demo data initialized');
 }
 
-// Auto-initialize when script loads
+// Initialize demo data on load
 if (typeof window !== 'undefined') {
-    // Initialize immediately
-    initializeDemoData();
-    
-    // Also initialize on page load
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', initializeDemoData);
-    }
+    window.addEventListener('DOMContentLoaded', () => {
+        initializeDemoData();
+    });
 }
-
-

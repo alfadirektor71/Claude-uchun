@@ -52,9 +52,9 @@ function updatePasswordStrength() {
 document.getElementById('loginForm')?.addEventListener('submit', function(e) {
     e.preventDefault();
     
-    const email = document.getElementById('email').value.trim();
+    const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
-    const remember = document.getElementById('remember')?.checked || false;
+    const remember = document.getElementById('remember').checked;
     
     // Validate
     if (!email || !password) {
@@ -62,33 +62,8 @@ document.getElementById('loginForm')?.addEventListener('submit', function(e) {
         return;
     }
     
-    // Make sure demo data exists
-    const users = storage.get('users') || [];
-    console.log('Existing users:', users);
-    
-    // If no users, create demo user
-    if (users.length === 0) {
-        const demoUser = {
-            id: 'demo-user-1',
-            firstName: 'Demo',
-            lastName: 'User',
-            email: 'demo@seensms.uz',
-            phone: '+998901234567',
-            password: 'demo123',
-            plan: 'basic',
-            balance: 100.00,
-            createdAt: new Date().toISOString(),
-            verified: true
-        };
-        users.push(demoUser);
-        storage.set('users', users);
-        console.log('Demo user created');
-    }
-    
     // Try to login
     const result = userManager.login(email, password, remember);
-    
-    console.log('Login result:', result);
     
     if (result.success) {
         showAlert(result.message, 'success');
@@ -110,11 +85,12 @@ document.getElementById('registerForm')?.addEventListener('submit', function(e) 
     const phone = document.getElementById('phone').value;
     const password = document.getElementById('password').value;
     const confirmPassword = document.getElementById('confirmPassword').value;
+    const plan = document.getElementById('plan').value;
     const terms = document.getElementById('terms').checked;
     const newsletter = document.getElementById('newsletter').checked;
     
     // Validate
-    if (!firstName || !lastName || !email || !phone || !password || !confirmPassword) {
+    if (!firstName || !lastName || !email || !phone || !password || !confirmPassword || !plan) {
         showAlert('Iltimos, barcha maydonlarni to\'ldiring', 'error');
         return;
     }
@@ -134,14 +110,14 @@ document.getElementById('registerForm')?.addEventListener('submit', function(e) 
         return;
     }
     
-    // Try to register with default basic plan
+    // Try to register
     const result = userManager.register({
         firstName,
         lastName,
         email,
         phone,
         password,
-        plan: 'basic' // Default bepul plan
+        plan
     });
     
     if (result.success) {
@@ -161,42 +137,11 @@ document.getElementById('registerForm')?.addEventListener('submit', function(e) 
 // Password strength indicator for register page
 document.getElementById('password')?.addEventListener('input', updatePasswordStrength);
 
-// Social login handlers - simplified auto login
+// Social login handlers (demo only)
 document.querySelectorAll('.btn-social').forEach(button => {
-    button.addEventListener('click', function(e) {
-        e.preventDefault();
+    button.addEventListener('click', function() {
         const provider = this.classList.contains('btn-google') ? 'Google' : 'Telegram';
-        
-        // Create a quick social user
-        const randomId = Date.now();
-        const socialUser = {
-            id: 'social-' + randomId,
-            firstName: provider,
-            lastName: 'User',
-            email: `${provider.toLowerCase()}user${randomId}@seensms.uz`,
-            phone: '+998900000000',
-            password: 'social-login-' + randomId,
-            plan: 'basic',
-            balance: 50.00,
-            createdAt: new Date().toISOString(),
-            verified: true,
-            provider: provider
-        };
-        
-        // Add to users
-        const users = storage.get('users') || [];
-        users.push(socialUser);
-        storage.set('users', users);
-        
-        // Auto login
-        userManager.currentUser = socialUser;
-        storage.set('currentUser', socialUser);
-        
-        showAlert(`${provider} orqali muvaffaqiyatli kirdingiz!`, 'success');
-        
-        setTimeout(() => {
-            window.location.href = 'dashboard.html';
-        }, 1000);
+        showAlert(`${provider} orqali kirish hozircha ishlamaydi`, 'warning');
     });
 });
 
